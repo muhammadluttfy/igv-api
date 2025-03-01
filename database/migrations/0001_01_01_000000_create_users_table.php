@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('provider_id')->nullable()->unique();
             $table->string('provider')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('last_logged_in_at')->nullable();
             $table->rememberToken();

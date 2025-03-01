@@ -21,7 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $tokenExpiration = (int) env('PASSPORT_TOKEN_EXPIRATION', 60);
-        Passport::tokensExpireIn(Carbon::now()->addMinutes($tokenExpiration));
+        //
     }
 }

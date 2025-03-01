@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class SocialAuthController extends Controller
 {
@@ -26,7 +27,6 @@ class SocialAuthController extends Controller
             ], 400);
         }
 
-        // Cek apakah email sudah terdaftar secara manual
         $existingUser = User::where('email', $socialUser->getEmail())->first();
 
         if ($existingUser && !$existingUser->provider) {
@@ -36,7 +36,6 @@ class SocialAuthController extends Controller
             ], 403);
         }
 
-        // Jika user sudah ada dengan Google, update datanya
         $user = User::updateOrCreate(
             [
                 'provider' => $provider,
@@ -51,6 +50,12 @@ class SocialAuthController extends Controller
 
         Auth::login($user);
         $user->update(['last_logged_in_at' => now()]);
+
+        Log::channel('telegram_info')->info('User authenticated via social login', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'provider' => $provider
+        ]);
 
         return response()->json([
             'success' => true,
