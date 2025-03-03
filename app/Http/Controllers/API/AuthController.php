@@ -77,7 +77,9 @@ class AuthController extends Controller
         } catch (\Exception $exception) {
             Log::channel('telegram_error')->error('Registration failed', [
                 'error_message' => $exception->getMessage(),
-                'stack_trace' => $exception->getTraceAsString()
+            ]);
+            Log::error('Registration failed', [
+                'error_message' => $exception->getMessage(),
             ]);
 
             return response()->json([
@@ -138,7 +140,9 @@ class AuthController extends Controller
         } catch (\Exception $exception) {
             Log::channel('telegram_error')->error('Login failed', [
                 'error_message' => $exception->getMessage(),
-                'stack_trace' => $exception->getTraceAsString()
+            ]);
+            Log::error('Login failed', [
+                'error_message' => $exception->getMessage(),
             ]);
 
             return response()->json([
@@ -159,8 +163,10 @@ class AuthController extends Controller
             ], 200);
         } catch (\Exception $exception) {
             Log::channel('telegram_error')->error('Failed to retrieve user data', [
+                'error_message' => $exception->getMessage()
+            ]);
+            Log::error('Failed to retrieve user data', [
                 'error_message' => $exception->getMessage(),
-                'stack_trace' => $exception->getTraceAsString()
             ]);
 
             return response()->json([
@@ -190,8 +196,10 @@ class AuthController extends Controller
             ]);
         } catch (\Exception $exception) {
             Log::channel('telegram_error')->error('Logout failed', [
+                'error_message' => $exception->getMessage()
+            ]);
+            Log::error('Logout failed', [
                 'error_message' => $exception->getMessage(),
-                'stack_trace' => $exception->getTraceAsString()
             ]);
 
             return response()->json([
